@@ -7,33 +7,82 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <section class="add-products">
-        <form >
-            <input type="number"  placeholder="enter product id: ex-5">
-            <input type="text"  placeholder="enter product name: macBook air m3">
-            <input type="number" placeholder="enter price in $0.00">
-            <button>Add Product</button>
+    <header class="header">
+        <nav>
+        <div class="log">
+            <img
+            src="https://cdn2.iconfinder.com/data/icons/weather-flat-14/64/weather02-512.png"
+            width="40px"
+            height="40px"
+            alt=""
+            srcset=""
+            />
+            <h4>Shopping </h2>
+        </div>
+        <div class="user">
+            <img
+            src="https://cdn-icons-png.flaticon.com/128/6325/6325109.png"
+            width="40px"
+            height="40px"
+            alt=""
+            srcset=""
+            />
+            user
+        </div>
+        <div type="submit" id="exit">exit</div>
+        </nav>
+    </header>
+    <section class="User_Name">
+        <form id="name_form">
+        <input
+            placeholder="Enter your Name"
+            type="text"
+            name="user_name"
+            id="input"
+            class="user_name"
+            required
+        />
+        <input
+            placeholder="Password"
+            type="password"
+            name="password"
+            id="password"
+            class="password"
+            required
+        />
+        <br />
+        <button class="sub_btn" type="submit">submit</button>
         </form>
     </section>
-        <div class="content">
-            <div class="cart">
-            <div class="add-to-cart">
-                <ul>
-
-                </ul>
-                
-            </div>
-            <div class="buy">
-                <h2>Shoppin Cart </h2>
-                <div class="buying-items">
-                No Product to checkOut !!
+    <main>
+        <section class="add-products">
+            <form id="productsInfo">
+                <input type="number"  placeholder="enter product id: ex-5" required>
+                <input type="text"  placeholder="enter product name: macBook air m3" required>
+                <input type="number" placeholder="enter price in $0.00" step="0.01" required>
+                <button>Add Product</button>
+            </form>
+        </section>
+            <div class="content">
+                <div class="cart">
+                <div class="add-to-cart">
+                    <ul>
+    
+                    </ul>
+                    
                 </div>
-                <div class="total">Total Price : $ 0.00</div>
-                <button id='checkOut'>Check Out</button>
+                <div class="buy">
+                    <h2>Shoppin Cart </h2>
+                    <div class="buying-items">
+                    No Product to checkOut !!
+                    </div>
+                    <div class="total">Total Price : $ 0.00</div>
+                    <button id='checkOut'>Check Out</button>
+                </div>
+                </div>
             </div>
-            </div>
-        </div>
-
+    
+    </main>
     <script src="script.js"></script>
 </body>
 </html>

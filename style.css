@@ -8,11 +8,11 @@ body{
     background-color: #2a2a2a;
     display:flex;
     min-height:100vh;
-    justify-content:center;
+    /* justify-content:center; */
     align-items:center;
     flex-direction: column;
     gap: 50px   ;
-    padding: 50px 0;
+    /* padding: 50px 0; */
 }
 *{
     list-style-type:none;
@@ -114,4 +114,104 @@ body{
             border-radius: 5px;
         }
     }
+}
+
+.User_Name{
+    background-color:rgba(37, 200, 249, 0.758) ;
+    padding: 14px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    /* -ms-transform: translate(-50%, -50%); */
+    transform: translate(-50%, -50%);
+    width:300px;
+    height: 200px;
+    border: 2px solid black;
+    border-radius: 16px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 100;
+    position: fixed;
+    animation: popup .5s ease-in-out ;
+}
+@keyframes popup {
+    0%{
+        top: 50%;
+        left: 50%;
+        transform: translate(-90%,-90%);
+        scale: 0.5;
+    }
+    100%{
+        scale: 1;
+    }
+}
+.user_name,.password{
+    width: 100%;
+    height: 3rem;
+    border-radius: 6px;
+    padding: 2px 12px;
+    font-size: large;
+    font-weight: 600;
+}
+.sub_btn{
+    width: 100%;
+    height: 2.3rem;   
+    border-radius: 5px;
+    font-size: large;
+    font-weight: 600;
+    text-transform: capitalize;
+    /* padding: 12px; */
+}
+.sub_btn:hover{
+    background-color: rgba(37, 200, 249, 0.758);
+    cursor: pointer;
+    box-shadow: 3px 3px 3px white,inset 3px 3px 3px white;
+    color: white;
+}
+.header{
+    width: 100%;
+    height: 40px;
+    background-color: rgb(255 128 247);
+    display:flex;
+    justify-content: center;
+}
+nav{
+    width: 100%;
+    height: 100%;
+    max-width: 800px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 12px;
+    position: relative;
+}
+.log,.user{
+    display: flex;
+    align-items: center;
+    text-transform: capitalize;
+    font-size: 1.3rem;
+}
+.log{
+    font-size: 2rem;
+    font-family: sans-serif;
+}
+#exit{
+    /* padding: 10px; */
+    font-size: 1.3rem;
+    background: rgb(255, 40, 40);
+    display: block;
+    position: absolute;
+    right: 5px;
+    top: 45px;
+    padding: 4px 18px;
+    border-radius: 2rem;
+    cursor: pointer;
+    text-transform: capitalize;
+    display: none;
+}
+
+main{
+    display: none;
 }
