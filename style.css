@@ -61,6 +61,15 @@ body{
         .buying-items{
             li{
                 margin-bottom: 6px;
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                font-size: x-large;
+                .check-box{
+                    accent-color: green;
+                    width: 24px;
+                    height: 24px;
+                }
             }
         }
         .total{

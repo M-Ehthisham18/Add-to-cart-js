@@ -31,7 +31,7 @@ ul.addEventListener('click',(e)=>{
         displayBuyingItems();
     }    
 })
- 
+
 //creating an array to store the added product data
 let cart = []
 function addToCart(product){
@@ -44,16 +44,39 @@ function displayBuyingItems() {
     let totalPrice = 0;
     cart.forEach((item)=>{
         totalPrice+= item.price;
+        
         const li = document.createElement('li');
-        li.innerHTML=`${item.pName} - $${item.price}`
-        buyingItems.appendChild(li)
+        li.innerHTML=`${item.pName} - $${item.price} <input class='check-box' type= 'checkbox' checked='true'>`
+        buyingItems.appendChild(li);
         total.textContent = `Total Price : $${totalPrice.toFixed(2)}`
+        const input = li.querySelector('input')
+        li.addEventListener('change',(e)=>{
+            // console.log(e.target);
+            // removeItem(e.target)
+            removeItem(item.id)
+        });
     });
+    if (cart.length === 0) {
+        emptyCart()
+    }
 };
+
+// function to remove the item to added cart list 
+function removeItem(params) {
+    cart =cart.filter( r => r.id !== params)
+    displayBuyingItems()
+}
+
+//event listener to checkout button 
 checkOut.addEventListener('click',()=>{
     cart = [];
+    emptyCart()
+    alert(`thank for checking Out`)
+})
+
+//function to display empty cart 
+function emptyCart() {
     total.textContent =`Total Price : $0.00`
     buyingItems.innerHTML = `No product has been added to Checkout list !`
     checkOut.style.display = 'none'
-    alert(`thank for checking Out`)
-})
+}
