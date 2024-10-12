@@ -23,20 +23,31 @@ products.forEach((product)=>{
 
 //add click event listener ot add to cart button 
 ul.addEventListener('click',(e)=>{
-    if(e.target.tagName === 'BUTTON'){
-        const productId =  parseInt(e.target.getAttribute('data-id'))
-        const product = products.find(p => p.id === productId);
-        checkOut.style.display = 'block'
-        addToCart(product);
+        
+        if(e.target.tagName === 'BUTTON'){
+            const productId =  parseInt(e.target.getAttribute('data-id'))
+            const product = products.find(p => p.id === productId);
+            const uniqueId = Date.now();
+
+        // Adding UID to the product =>to the copy of object (to avoid mutating the original)
+        const productWithUid = {
+            ...product,
+            uid: uniqueId // Adding a unique ID based on current timestamp
+        };
+        checkOut.style.display = 'block';
+        addToCart(productWithUid); // Use product with the UID added
+        localStorage.setItem('allItems',JSON.stringify(cart))
+
         displayBuyingItems();
-    }    
+        }   
 })
 
 //creating an array to store the added product data
 let cart = []
-function addToCart(product){
-    cart.push(product)
+function addToCart(productWithUid){
+    cart.push(productWithUid)
 }
+
 
 // function to display the added items
 function displayBuyingItems() {
@@ -47,13 +58,12 @@ function displayBuyingItems() {
         
         const li = document.createElement('li');
         li.innerHTML=`${item.pName} - $${item.price} <input class='check-box' type= 'checkbox' checked='true'>`
+        // li.innerHTML=`${item.pName} - $${item.price} <input type="button" value="remove">`
         buyingItems.appendChild(li);
         total.textContent = `Total Price : $${totalPrice.toFixed(2)}`
         const input = li.querySelector('input')
-        li.addEventListener('change',(e)=>{
-            // console.log(e.target);
-            // removeItem(e.target)
-            removeItem(item.id)
+        input.addEventListener('change',()=>{
+            removeItem(item.uid)
         });
     });
     if (cart.length === 0) {
@@ -62,8 +72,8 @@ function displayBuyingItems() {
 };
 
 // function to remove the item to added cart list 
-function removeItem(params) {
-    cart =cart.filter( r => r.id !== params)
+function removeItem(uid) {
+    cart =cart.filter( r => r.uid !== uid)
     displayBuyingItems()
 }
 
@@ -71,6 +81,8 @@ function removeItem(params) {
 checkOut.addEventListener('click',()=>{
     cart = [];
     emptyCart()
+    localStorage.clear()
+    checkOut.style.display="none"
     alert(`thank for checking Out`)
 })
 
@@ -80,3 +92,54 @@ function emptyCart() {
     buyingItems.innerHTML = `No product has been added to Checkout list !`
     checkOut.style.display = 'none'
 }
+
+window.onload = function () {
+    // Retrieve data from localStorage
+    const storedData = JSON.parse(localStorage.getItem('allItems'));
+    
+    buyingItems.innerHTML = '';  
+    
+    let totalPrice = 0;
+
+    // Ensure storedData exists and is an array
+    if (Array.isArray(storedData) && storedData.length > 0) {
+        storedData.forEach((item) => {
+            totalPrice += item.price;
+
+            const li = document.createElement('li');
+            li.innerHTML = `${item.pName} - $${item.price.toFixed(2)} <input class='check-box' type='checkbox' checked='true'>`;
+            buyingItems.appendChild(li);
+            checkOut.style.display = 'block';
+
+            const input = li.querySelector('input');
+            input.addEventListener('change', () => {
+                if (!input.checked) {
+                    removeItem(item.uid); // Remove item if unchecked
+                }
+            });
+        });
+    } else {
+        emptyCart();
+    }
+
+    total.textContent = `Total Price : $${totalPrice.toFixed(2)}`;
+
+    // If no items in cart, show empty cart message
+    if (storedData && storedData.length === 0) {
+        emptyCart();
+    }
+};
+
+// Function to remove an item from the cart and localStorage
+function removeItem(uid) {
+    let storedData = JSON.parse(localStorage.getItem('allItems'));
+
+    // Filter out the item with the matching UID
+    storedData = storedData.filter(item => item.uid !== uid);
+
+    // Update localStorage with the remaining items
+    localStorage.setItem('allItems', JSON.stringify(storedData));
+    window.onload();
+}
+
+
