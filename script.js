@@ -2,27 +2,54 @@ const ul = document.querySelector("ul");
 const buyingItems = document.querySelector('.buying-items');
 const total = document.querySelector('.total')
 const checkOut = document.querySelector('#checkOut');
+const form = document.querySelector('form');
 
-let products = [
+form.addEventListener('submit',(e)=>{
+    e.preventDefault()
+    let id = parseInt(form.elements[0].value);
+    let pName = form.elements[1].value;
+    let price = parseFloat(form.elements[2].value);
+    form.elements[0].value=''
+    form.elements[1].value=''
+    form.elements[2].value=''
+    console.log("yess");
+    let newProduct ={
+        id : id,
+        pName:pName,
+        price: price,
+    }
+    console.log(typeof newProduct.price);
+    
+    products.push(newProduct)
+    displayingProduct()
+    localStorage.setItem('allProducts',JSON.stringify(products))
+    console.log(products);
+    
+})
+let products =  JSON.parse(localStorage.getItem('allProducts')) || [
     {id:1 , pName:"product-1",price:29.99},
     {id:2 , pName:"product-2",price:18.99},
     {id:3 , pName:"product-3",price:59.99},
     {id:4 , pName:"product-4",price:12.99353},
     
 ];
+
 //retrive data from localstorage if cart is empty
 let cart =JSON.parse(localStorage.getItem('allItems')) || []
 
 //displaying the products
-products.forEach((product)=>{
-    const productList = document.createElement('li')
-    productList.innerHTML=`
-        <span> ${product.pName} - $${product.price.toFixed(2)} </span> 
-        <button data-id = '${product.id}'>Add to Cart</button>
-    `
-    ul.appendChild(productList)
-});
-
+function displayingProduct() {
+    ul.textContent  =``
+    products.forEach((product)=>{
+        const productList = document.createElement('li')
+        productList.innerHTML=`
+            <span> ${product.pName} - $${product.price.toFixed(2)} </span> 
+            <button data-id = '${product.id}'>Add to Cart</button>
+        `
+        ul.appendChild(productList)
+    });
+}
+displayingProduct()
 //add click event listener ot add to cart button 
 ul.addEventListener('click',(e)=>{
         
@@ -90,7 +117,7 @@ function removeItem(uid) {
 checkOut.addEventListener('click',()=>{
     cart = [];
     emptyCart()
-    localStorage.clear()
+    localStorage.removeItem('allItems')
     checkOut.style.display="none"
     alert(`thank for checking Out`)
 })
