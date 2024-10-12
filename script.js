@@ -10,6 +10,8 @@ let products = [
     {id:4 , pName:"product-4",price:12.99353},
     
 ];
+//retrive data from localstorage if cart is empty
+let cart =JSON.parse(localStorage.getItem('allItems')) || []
 
 //displaying the products
 products.forEach((product)=>{
@@ -43,7 +45,6 @@ ul.addEventListener('click',(e)=>{
 })
 
 //creating an array to store the added product data
-let cart = []
 function addToCart(productWithUid){
     cart.push(productWithUid)
 }
@@ -53,6 +54,9 @@ function addToCart(productWithUid){
 function displayBuyingItems() {
     buyingItems.innerHTML = ``  
     let totalPrice = 0;
+    if (cart.length === 0) {
+        emptyCart()
+    }
     cart.forEach((item)=>{
         totalPrice+= item.price;
         
@@ -66,15 +70,20 @@ function displayBuyingItems() {
             removeItem(item.uid)
         });
     });
-    if (cart.length === 0) {
-        emptyCart()
-    }
+    
 };
 
-// function to remove the item to added cart list 
+// function to remove the item from added cart list and localstorage 
 function removeItem(uid) {
-    cart =cart.filter( r => r.uid !== uid)
-    displayBuyingItems()
+    let storedData = JSON.parse(localStorage.getItem('allItems'));
+
+    // Filter out the item with the matching UID
+    storedData = storedData.filter(item => item.uid !== uid);
+
+    // Update localStorage with the remaining items
+    localStorage.setItem('allItems', JSON.stringify(storedData));
+    cart = storedData
+    window.onload();
 }
 
 //event listener to checkout button 
@@ -129,17 +138,5 @@ window.onload = function () {
         emptyCart();
     }
 };
-
-// Function to remove an item from the cart and localStorage
-function removeItem(uid) {
-    let storedData = JSON.parse(localStorage.getItem('allItems'));
-
-    // Filter out the item with the matching UID
-    storedData = storedData.filter(item => item.uid !== uid);
-
-    // Update localStorage with the remaining items
-    localStorage.setItem('allItems', JSON.stringify(storedData));
-    window.onload();
-}
 
 
